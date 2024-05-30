@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bahrlou.filesample.databinding.ItemFileLinearBinding
 import java.io.File
+import java.net.URLConnection
 
 class FileAdapter(val fileList: ArrayList<File>) :
     RecyclerView.Adapter<FileAdapter.FileViewHolder>() {
@@ -17,7 +18,11 @@ class FileAdapter(val fileList: ArrayList<File>) :
         fun bindViews(file: File) {
 
             binding.textView.text = file.name
-            binding.imageView.setImageResource(R.drawable.ic_folder)
+            if (file.isDirectory)
+                binding.imageView.setImageResource(R.drawable.ic_folder)
+            else if (file.isFile)
+                binding.imageView.setImageResource(R.drawable.ic_file)
+
 
         }
 
@@ -37,4 +42,22 @@ class FileAdapter(val fileList: ArrayList<File>) :
 
         holder.bindViews(fileList[position])
     }
+
+    fun isImage(path: String): Boolean {
+        val mimeType: String = URLConnection.guessContentTypeFromName(path)
+
+        return mimeType.startsWith("image")
+    }
+
+    fun isVideo(path: String): Boolean {
+        val mimeType: String = URLConnection.guessContentTypeFromName(path)
+
+        return mimeType.startsWith("video")
+    }
+
+    fun isZip(name: String): Boolean {
+        return name.contains(".zip") || name.contains(".rar")
+    }
+
+
 }

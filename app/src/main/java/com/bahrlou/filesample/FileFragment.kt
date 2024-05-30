@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.Visibility
 import com.bahrlou.filesample.databinding.FragmentFileBinding
 import java.io.File
 
@@ -29,9 +28,12 @@ class FileFragment(val path: String) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val ourFile = File(path)
-
         binding.txtPath.text = "${ourFile.name} > "
 
+        setRecyclerView(ourFile)
+    }
+
+    private fun setRecyclerView(ourFile: File) {
         if (ourFile.isDirectory) {
             val fileList = ArrayList<File>()
             ourFile.listFiles()?.let { fileList.addAll(it) }
@@ -43,8 +45,7 @@ class FileFragment(val path: String) : Fragment() {
 
                 binding.imgNoData.visibility = View.GONE
                 binding.recyclerMain.visibility = View.VISIBLE
-            }
-            else{
+            } else {
                 binding.imgNoData.visibility = View.VISIBLE
                 binding.recyclerMain.visibility = View.GONE
             }
