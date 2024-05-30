@@ -8,7 +8,7 @@ import com.bahrlou.filesample.databinding.ItemFileLinearBinding
 import java.io.File
 import java.net.URLConnection
 
-class FileAdapter(val fileList: ArrayList<File>) :
+class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
     RecyclerView.Adapter<FileAdapter.FileViewHolder>() {
 
     private lateinit var binding: ItemFileLinearBinding
@@ -17,12 +17,45 @@ class FileAdapter(val fileList: ArrayList<File>) :
 
         fun bindViews(file: File) {
 
+            var fileType: String = ""
             binding.textView.text = file.name
-            if (file.isDirectory)
-                binding.imageView.setImageResource(R.drawable.ic_folder)
-            else if (file.isFile)
-                binding.imageView.setImageResource(R.drawable.ic_file)
 
+
+            when {
+
+                file.isDirectory -> {
+                    binding.imageView.setImageResource(R.drawable.ic_folder)
+                }
+
+                isImage(file.path) -> {
+                    binding.imageView.setImageResource(R.drawable.ic_image)
+                    fileType = "image/*"
+                }
+
+                isVideo(file.path) -> {
+                    binding.imageView.setImageResource(R.drawable.ic_video)
+                    fileType = "video/*"
+                }
+
+                isZip(file.name) -> {
+                    binding.imageView.setImageResource(R.drawable.ic_zip)
+                    fileType = "application/zip"
+
+                }
+
+                else -> {
+                    binding.imageView.setImageResource(R.drawable.ic_file)
+                    fileType = "text/plain"
+                }
+
+            }
+            itemView.setOnClickListener {
+                if (file.isDirectory) {
+                    fileEvent.onFolderClicked(file.path)
+                } else {
+                    fileEvent.onFileClicked(file, fileType)
+                }
+            }
 
         }
 
@@ -59,5 +92,10 @@ class FileAdapter(val fileList: ArrayList<File>) :
         return name.contains(".zip") || name.contains(".rar")
     }
 
+
+    interface FileEvent {
+        fun onFileClicked(file: File, type: String)
+        fun onFolderClicked(path: String)
+    }
 
 }
