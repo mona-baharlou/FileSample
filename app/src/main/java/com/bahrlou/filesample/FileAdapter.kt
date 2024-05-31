@@ -100,6 +100,12 @@ class FileAdapter(private val fileList: ArrayList<File>, private val fileEvent: 
         return fileList.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+
+        return ourViewType
+
+    }
+
     override fun onBindViewHolder(holder: FileViewHolder, position: Int) {
 
         holder.bindViews(fileList[position])
