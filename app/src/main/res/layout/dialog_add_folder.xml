@@ -30,31 +30,31 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText"
+            android:id="@+id/edt_text_folder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_cancel"
+        android:id="@+id/btn_cancel_folder"
         android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_create"
+        app:layout_constraintStart_toEndOf="@+id/btn_create_folder"
         app:layout_constraintTop_toBottomOf="@+id/text_layout" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_create"
+        android:id="@+id/btn_create_folder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create"
-        app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cancel_folder"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_cancel" />
+        app:layout_constraintTop_toTopOf="@+id/btn_cancel_folder" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

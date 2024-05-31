@@ -102,6 +102,8 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
         }
     }
 
+
+
     private fun createFile() {
         val dialog = AlertDialog.Builder(requireContext()).create()
 
@@ -113,7 +115,7 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
         addFileBinding.btnCancel.setOnClickListener { dialog.dismiss() }
         addFileBinding.btnCreate.setOnClickListener {
 
-            val newFileName = addFileBinding.textInputEditText.text.toString()
+            val newFileName = addFileBinding.edtText.text.toString()
 
             //file/pic ---> for example
             val newFile = File(path + File.separator + newFileName)
@@ -140,10 +142,11 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
         //dialog.create()
         dialog.show()
 
-        addFolderBinding.btnCancel.setOnClickListener { dialog.dismiss() }
-        addFolderBinding.btnCreate.setOnClickListener {
+        addFolderBinding.btnCancelFolder.setOnClickListener {
+            dialog.dismiss() }
+        addFolderBinding.btnCreateFolder.setOnClickListener {
 
-            val newFolderName = addFolderBinding.textInputEditText.text.toString()
+            val newFolderName = addFolderBinding.edtTextFolder.text.toString()
 
             //file/pic ---> for example
             val newFile = File(path + File.separator + newFolderName)
