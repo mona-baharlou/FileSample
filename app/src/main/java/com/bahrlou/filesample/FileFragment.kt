@@ -62,9 +62,33 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
         binding.btnShowType.setOnClickListener {
             if (MainActivity.ourViewType == 0) {
 
+                MainActivity.ourViewType = 1
+                MainActivity.ourSpanCount = 3
+                myAdapter.changeViewType(MainActivity.ourViewType)
+
+                binding.recyclerMain.layoutManager = GridLayoutManager(
+                    context,
+                    MainActivity.ourSpanCount
+                )
+
+                binding.btnShowType.setImageResource(R.drawable.ic_grid)
 
             } else if (MainActivity.ourViewType == 1) {
 
+                MainActivity.ourViewType = 0
+                MainActivity.ourSpanCount = 1
+
+                myAdapter.changeViewType(
+                    MainActivity.ourViewType
+
+                )
+
+                binding.recyclerMain.layoutManager = GridLayoutManager(
+                    context,
+                    MainActivity.ourSpanCount
+                )
+
+                binding.btnShowType.setImageResource(R.drawable.ic_list)
 
             }
         }

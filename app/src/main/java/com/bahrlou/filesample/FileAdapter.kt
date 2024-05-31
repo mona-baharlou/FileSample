@@ -10,9 +10,10 @@ import com.bahrlou.filesample.databinding.ItemFileLinearBinding
 import java.io.File
 import java.net.URLConnection
 
-class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
+class FileAdapter(private val fileList: ArrayList<File>, private val fileEvent: FileEvent) :
     RecyclerView.Adapter<FileAdapter.FileViewHolder>() {
 
+    private var ourViewType: Int = 0
     // private lateinit var binding: ItemFileLinearBinding
 
     inner class FileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -104,19 +105,19 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
         holder.bindViews(fileList[position])
     }
 
-    fun isImage(path: String): Boolean {
+    private fun isImage(path: String): Boolean {
         val mimeType: String = URLConnection.guessContentTypeFromName(path)
 
         return mimeType.startsWith("image")
     }
 
-    fun isVideo(path: String): Boolean {
+    private fun isVideo(path: String): Boolean {
         val mimeType: String = URLConnection.guessContentTypeFromName(path)
 
         return mimeType.startsWith("video")
     }
 
-    fun isZip(name: String): Boolean {
+    private fun isZip(name: String): Boolean {
         return name.contains(".zip") || name.contains(".rar")
     }
 
@@ -128,6 +129,11 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
     fun deleteFile(file: File, position: Int) {
         fileList.remove(file)
         notifyItemRemoved(position)
+    }
+
+    fun changeViewType(newViewType: Int) {
+        ourViewType = newViewType
+        notifyDataSetChanged()
     }
 
 
