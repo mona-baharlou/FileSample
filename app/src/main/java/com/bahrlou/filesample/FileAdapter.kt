@@ -57,6 +57,13 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
                 }
             }
 
+
+            itemView.setOnLongClickListener {
+
+                fileEvent.onLongClicked(file , adapterPosition)
+                true
+            }
+
         }
 
     }
@@ -97,11 +104,17 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
         notifyItemInserted(0)
     }
 
+    fun deleteFile(file: File , position: Int){
+        fileList.remove(file)
+        notifyItemRemoved(position)
+    }
 
 
     interface FileEvent {
         fun onFileClicked(file: File, type: String)
         fun onFolderClicked(path: String)
+
+        fun onLongClicked(file: File, position: Int)
     }
 
 }
