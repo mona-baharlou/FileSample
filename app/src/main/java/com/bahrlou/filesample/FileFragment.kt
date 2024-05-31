@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bahrlou.filesample.databinding.DialogAddFileBinding
 import com.bahrlou.filesample.databinding.DialogAddFolderBinding
@@ -18,10 +19,15 @@ import com.bahrlou.filesample.databinding.DialogDeleteItemBinding
 import com.bahrlou.filesample.databinding.FragmentFileBinding
 import java.io.File
 
+
+//linear -> 0
+//grid -> 1
+
 class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
 
     private lateinit var binding: FragmentFileBinding
     private lateinit var myAdapter: FileAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +57,16 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
 
         binding.btnAddFile.setOnClickListener {
             createFile()
+        }
+
+        binding.btnShowType.setOnClickListener {
+            if (MainActivity.ourViewType == 0) {
+
+
+            } else if (MainActivity.ourViewType == 1) {
+
+
+            }
         }
     }
 
@@ -123,7 +139,14 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
 
             myAdapter = FileAdapter(fileList, this)
             binding.recyclerMain.adapter = myAdapter
-            binding.recyclerMain.layoutManager = LinearLayoutManager(context)
+            binding.recyclerMain.layoutManager =
+                GridLayoutManager(
+                    context,
+                    MainActivity.ourSpanCount,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+            //LinearLayoutManager(context)
 
 
             if (fileList.size > 0) {

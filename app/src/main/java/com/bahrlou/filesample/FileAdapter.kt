@@ -3,6 +3,8 @@ package com.bahrlou.filesample
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bahrlou.filesample.databinding.ItemFileLinearBinding
 import java.io.File
@@ -11,40 +13,44 @@ import java.net.URLConnection
 class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
     RecyclerView.Adapter<FileAdapter.FileViewHolder>() {
 
-    private lateinit var binding: ItemFileLinearBinding
+    // private lateinit var binding: ItemFileLinearBinding
 
     inner class FileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bindViews(file: File) {
 
             var fileType: String = ""
-            binding.textView.text = file.name
+
+            val txt = itemView.findViewById<TextView>(R.id.textView)
+            txt.text = file.name
+
+            val img = itemView.findViewById<ImageView>(R.id.imageView)
 
 
             when {
 
                 file.isDirectory -> {
-                    binding.imageView.setImageResource(R.drawable.ic_folder)
+                    img.setImageResource(R.drawable.ic_folder)
                 }
 
                 isImage(file.path) -> {
-                    binding.imageView.setImageResource(R.drawable.ic_image)
+                    img.setImageResource(R.drawable.ic_image)
                     fileType = "image/*"
                 }
 
                 isVideo(file.path) -> {
-                    binding.imageView.setImageResource(R.drawable.ic_video)
+                    img.setImageResource(R.drawable.ic_video)
                     fileType = "video/*"
                 }
 
                 isZip(file.name) -> {
-                    binding.imageView.setImageResource(R.drawable.ic_zip)
+                    img.setImageResource(R.drawable.ic_zip)
                     fileType = "application/zip"
 
                 }
 
                 else -> {
-                    binding.imageView.setImageResource(R.drawable.ic_file)
+                    img.setImageResource(R.drawable.ic_file)
                     fileType = "text/plain"
                 }
 
@@ -60,7 +66,7 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
 
             itemView.setOnLongClickListener {
 
-                fileEvent.onLongClicked(file , adapterPosition)
+                fileEvent.onLongClicked(file, adapterPosition)
                 true
             }
 
@@ -69,9 +75,24 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileViewHolder {
-        val inflaytor = LayoutInflater.from(parent.context)
-        binding = ItemFileLinearBinding.inflate(inflaytor, parent, false)
-        return FileViewHolder(binding.root)
+
+        val view: View
+
+        if (viewType == 0) {
+            view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_file_linear, parent, false)
+        } else {
+            view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_file_grid, parent, false)
+
+        }
+
+        return FileViewHolder(view)
+
+
+        //val inflaytor = LayoutInflater.from(parent.context)
+        /*  binding = ItemFileLinearBinding.inflate(inflaytor, parent, false)
+          return FileViewHolder(binding.root)*/
     }
 
     override fun getItemCount(): Int {
@@ -104,7 +125,7 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
         notifyItemInserted(0)
     }
 
-    fun deleteFile(file: File , position: Int){
+    fun deleteFile(file: File, position: Int) {
         fileList.remove(file)
         notifyItemRemoved(position)
     }
