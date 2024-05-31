@@ -8,15 +8,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bahrlou.filesample.databinding.DialogAddFolderBinding
 import com.bahrlou.filesample.databinding.FragmentFileBinding
 import java.io.File
 
 class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
 
     private lateinit var binding: FragmentFileBinding
+    private lateinit var myAdapter: FileAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +58,30 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
 
     private fun createFolder() {
 
+        val dialog = AlertDialog.Builder(requireContext()).create()
+
+        val addFolderBinding = DialogAddFolderBinding.inflate(layoutInflater)
+        dialog.setView(addFolderBinding.root)
+        //dialog.create()
+        dialog.show()
+
+        addFolderBinding.btnCancel.setOnClickListener { dialog.dismiss() }
+        addFolderBinding.btnCreate.setOnClickListener {
+
+            val newFolderName = addFolderBinding.textInputEditText.text.toString()
+
+            //file/pic ---> for example
+            val newFile = File(path + File.separator + newFolderName)
+
+            if (!newFile.exists()) {
+                if (newFile.mkdir()) {
+                    myAdapter.addNewFile(newFile)
+                    binding.recyclerMain.scrollToPosition(0)
+                }
+            }
+
+            dialog.dismiss()
+        }
     }
 
     private fun setRecyclerView(ourFile: File) {
@@ -66,7 +93,7 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
             }
 
             if (fileList.size > 0) {
-                val myAdapter = FileAdapter(fileList, this)
+                myAdapter = FileAdapter(fileList, this)
                 binding.recyclerMain.adapter = myAdapter
                 binding.recyclerMain.layoutManager = LinearLayoutManager(context)
 

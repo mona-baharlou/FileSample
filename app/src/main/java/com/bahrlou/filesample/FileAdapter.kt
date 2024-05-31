@@ -92,6 +92,12 @@ class FileAdapter(val fileList: ArrayList<File>, val fileEvent: FileEvent) :
         return name.contains(".zip") || name.contains(".rar")
     }
 
+    fun addNewFile(newFile: File) {
+        fileList.add(0, newFile)
+        notifyItemInserted(0)
+    }
+
+
 
     interface FileEvent {
         fun onFileClicked(file: File, type: String)
