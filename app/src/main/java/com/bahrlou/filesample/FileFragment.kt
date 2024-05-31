@@ -3,7 +3,6 @@ package com.bahrlou.filesample
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.net.http.UrlRequest.Builder
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -36,6 +35,26 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
         binding.txtPath.text = "${ourFile.name} > "
 
         setRecyclerView(ourFile)
+
+        setButtonClicks()
+    }
+
+    private fun setButtonClicks() {
+        binding.btnAddFolder.setOnClickListener {
+            createFolder()
+        }
+
+        binding.btnAddFile.setOnClickListener {
+            createFile()
+        }
+    }
+
+    private fun createFile() {
+
+    }
+
+    private fun createFolder() {
+
     }
 
     private fun setRecyclerView(ourFile: File) {
