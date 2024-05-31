@@ -42,6 +42,14 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if(MainActivity.ourViewType == 0){
+            binding.btnShowType.setImageResource(R.drawable.ic_list)
+        }
+        else{
+            binding.btnShowType.setImageResource(R.drawable.ic_grid)
+
+        }
+
         val ourFile = File(path)
         binding.txtPath.text = "${ourFile.name} > "
 
@@ -172,6 +180,7 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
                 )
             //LinearLayoutManager(context)
 
+            myAdapter.changeViewType(MainActivity.ourViewType)
 
             if (fileList.size > 0) {
 
