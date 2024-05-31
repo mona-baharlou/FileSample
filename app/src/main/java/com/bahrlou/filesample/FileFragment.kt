@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bahrlou.filesample.databinding.DialogAddFileBinding
 import com.bahrlou.filesample.databinding.DialogAddFolderBinding
 import com.bahrlou.filesample.databinding.FragmentFileBinding
 import java.io.File
@@ -53,7 +54,32 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
     }
 
     private fun createFile() {
+        val dialog = AlertDialog.Builder(requireContext()).create()
 
+        val addFileBinding = DialogAddFileBinding.inflate(layoutInflater)
+        dialog.setView(addFileBinding.root)
+        //dialog.create()
+        dialog.show()
+
+        addFileBinding.btnCancel.setOnClickListener { dialog.dismiss() }
+        addFileBinding.btnCreate.setOnClickListener {
+
+            val newFileName = addFileBinding.textInputEditText.text.toString()
+
+            //file/pic ---> for example
+            val newFile = File(path + File.separator + newFileName)
+
+            if (!newFile.exists()) {
+                if (newFile.createNewFile()) {
+                    myAdapter.addNewFile(newFile)
+                    binding.recyclerMain.scrollToPosition(0)
+                    binding.recyclerMain.visibility = View.VISIBLE
+                    binding.imgNoData.visibility = View.GONE
+                }
+            }
+
+            dialog.dismiss()
+        }
     }
 
     private fun createFolder() {
@@ -77,6 +103,8 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
                 if (newFile.mkdir()) {
                     myAdapter.addNewFile(newFile)
                     binding.recyclerMain.scrollToPosition(0)
+                    binding.recyclerMain.visibility = View.VISIBLE
+                    binding.imgNoData.visibility = View.GONE
                 }
             }
 
@@ -92,10 +120,12 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
                 fileList.sort()
             }
 
+            myAdapter = FileAdapter(fileList, this)
+            binding.recyclerMain.adapter = myAdapter
+            binding.recyclerMain.layoutManager = LinearLayoutManager(context)
+
+
             if (fileList.size > 0) {
-                myAdapter = FileAdapter(fileList, this)
-                binding.recyclerMain.adapter = myAdapter
-                binding.recyclerMain.layoutManager = LinearLayoutManager(context)
 
                 binding.imgNoData.visibility = View.GONE
                 binding.recyclerMain.visibility = View.VISIBLE
