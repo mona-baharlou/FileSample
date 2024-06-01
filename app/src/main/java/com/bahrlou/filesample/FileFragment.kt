@@ -115,7 +115,7 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
         addFileBinding.btnCancel.setOnClickListener { dialog.dismiss() }
         addFileBinding.btnCreate.setOnClickListener {
 
-            val newFileName = addFileBinding.edtText.text.toString()
+            val newFileName = addFileBinding.edtAddFolder.text.toString()
 
             //file/pic ---> for example
             val newFile = File(path + File.separator + newFileName)
@@ -142,11 +142,11 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
         //dialog.create()
         dialog.show()
 
-        addFolderBinding.btnCancelFolder.setOnClickListener {
+        addFolderBinding.btnCancel.setOnClickListener {
             dialog.dismiss() }
-        addFolderBinding.btnCreateFolder.setOnClickListener {
+        addFolderBinding.btnCreate.setOnClickListener {
 
-            val newFolderName = addFolderBinding.edtTextFolder.text.toString()
+            val newFolderName = addFolderBinding.edtAddFolder.text.toString()
 
             //file/pic ---> for example
             val newFile = File(path + File.separator + newFolderName)
@@ -241,7 +241,7 @@ class FileFragment(val path: String) : Fragment(), FileAdapter.FileEvent {
 
             if (file.exists()) {
                 if (file.deleteRecursively()) {
-                    myAdapter.deleteFile(file, position)
+                    myAdapter.removeFile(file, position)
                 }
             }
 
